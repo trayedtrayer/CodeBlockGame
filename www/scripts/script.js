@@ -23,9 +23,20 @@ function createBlock(blockType){
     const newBlock = document.createElement('div');
     newBlock.textContent = getBlockName(blockType);
     newBlock.className = 'block-active';
-    newBlock.backgroundColor = '#2196F3';
+    const newButton = document.createElement('button');
+    newButton.textContent = "X";
+    newButton.className = 'delete';
+    addClickDel(newButton);
+    newBlock.appendChild(newButton);
     workspace.appendChild(newBlock);
     console.log('Блок добавлен:', blockType);
+}
+
+function addClickDel(del){
+    del.addEventListener('click', function() {
+        const deleteObj = this.closest('.block-active');
+        deleteObj.remove();
+    })
 }
 
 blocks.forEach(block => {
