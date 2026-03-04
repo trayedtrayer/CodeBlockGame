@@ -146,6 +146,36 @@ function findSnapTarget(draggingEl) {
     return best ? { el: best, mode: bestMode } : null;
 }
 
+function isVarNameKey(key){
+    return key === 'varName' || key === 'funkName';
+}
+
+function isExpressionKey(key){
+    return key === 'value' || key === 'from' || key === 'to' ||
+    key === 'step' || key === 'condition' || key === 'message' ||
+    key === 'args' || key === 'params';
+}
+
+function validateVarName(name){
+    return /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(name);
+}
+function handleVarAssign(data, ctx){
+    const name =data.varName;
+    if (!validateVarName(name)) throw new Error('Некоректное имя переменной');
+    if (!data.value) throw new Error('Нет вырадения');
+
+    const value =evalExpr(data.value, ctx);
+    ctx.vars[name] = value;
+}
+
+function handleConsoleLog(data, ctx){
+    if (!data.message){
+        ctx.output.push('');
+        return;
+    }
+    const v = evalExpr(data.message, stx);
+    ctx.output.push(string(v));
+}
 function buildBlockBody(blockEl, blockType, blockId) {
     const entry  = getProgramEntry(blockId);
     const config = BLOCK_CONFIG[blockType];
@@ -163,10 +193,53 @@ function buildBlockBody(blockEl, blockType, blockId) {
             lbl.textContent = label;
             row.appendChild(lbl);
         }
+
         const input = document.createElement('input');
         input.className = 'block-input';
         input.placeholder = placeholder;
-        input.addEventListener('change', () => { entry.data[key] = input.value.trim(); });
+
+
+        input.addEventListener('change', () => { 
+            const text = input.value.trim();
+            
+            input.classList.remove('error');
+            blockEl.classList.remove('error');
+            delete entry.error;
+
+            if (!text){
+                entry.data[key] = null;
+                return;
+            }
+            
+            if (isVarNameKey(key)){
+                if (!validateVarName(text)){
+                    input.classList.add('error');
+                    blockEl.classList.add('error');
+                    entry.error = {field: key, message: 'Некоректное имя'};
+                }
+                else {
+                    entry.data[key] = text;
+                }
+                return;
+            }
+
+            if (isExpressionKey(key)){
+                try {
+                    const ast =parseExpression(text);
+                    entry.data[key] = ast;    
+                }
+                catch(e){
+                    input.classList.add('error');
+                    blockEl.classList.add('error')
+                    entry.error = {field: key, message: e.message};
+                }
+                return;
+            }    
+
+            entry.data[key] = text;
+        });
+
+
         input.addEventListener('mousedown', e => e.stopPropagation());
         row.appendChild(input);
         body.appendChild(row);
@@ -320,8 +393,36 @@ function getChain(startId) {
     return chain;
 }
 
+function hasSyntaxErrors(){
+    let errorFound = false;
+    program.forEach(entry =>{
+        if (entry.error){
+            const el = getBlockEl(entry.id);
+            if (el) el.classList.add('error');
+            errorFound = true;
+        }
+    });
+    return errorFound
+}
+
 runButton.addEventListener('click', () => {
+    outputEl.textContent = '';
+    if (hasSyntaxErrors){
+        outputEl.textContent = 'Исправьте синтаксические ошибки в блоках';
+        return;
+    }
+
     const roots = getRootBlocks();
     const chains = roots.map(r => getChain(r.id));
-    outputEl.textContent = JSON.stringify(chains, null, 2);
+
+    const ctx = {var: {}, arrays: {}, output: []};
+
+    try {
+        for (const chain of chains){
+            execChain(chain, ctx);
+        }
+        outputEl.textContent = ctx/output.join('\n');    
+    } catch (e) {
+        outputEl.textContent = 'Ошибка выполнения: ' + e.message;
+    }
 });
