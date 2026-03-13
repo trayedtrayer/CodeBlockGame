@@ -120,8 +120,20 @@ body {
     background-image:
         radial-gradient(circle, #ffffff08 1px, transparent 1px);
     background-size: 24px 24px;
-    overflow: hidden;
+    overflow: auto;
     position: relative;
+    min-width: 0;
+}
+
+.workspace::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 3000px;
+    height: 3000px;
+    top: 0;
+    left: 0;
+    pointer-events: none;
 }
 
 .workspace-hint {
@@ -348,11 +360,166 @@ body {
 .block-active {
     transition: box-shadow 0.1s;
 }
-.block-input.error {
-  border-color: #f87171;
-  background: rgba(127, 29, 29, 0.4);
+
+.block--if     { background-color: #8e44ad; border-color: #7d3c98; }
+.block--if:hover { background-color: #7d3c98; }
+
+.block--output { background-color: #27ae60; border-color: #1e8449; }
+.block--output:hover { background-color: #1e8449; }
+
+.block-active--output { background-color: #27ae60; border-color: #1e8449; }
+
+.body-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.5);
+    padding: 4px 12px 2px;
 }
 
-.block-active.error {
-  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.9);
+.block-zone {
+    margin: 0 8px 8px;
+    min-height: 48px;
+    height: auto;
+    border: 2px dashed rgba(255,255,255,0.25);
+    border-radius: 5px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    font-style: italic;
+    transition: border-color 0.15s, background 0.15s, min-height 0.15s;
+    cursor: default;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px;
+    overflow: visible;
+}
+
+.block-zone.has-blocks {
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 4px;
+}
+
+.block-zone.drag-over {
+    border-color: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.6);
+}
+
+.block-zone .block-active {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    margin-bottom: 2px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.block-zone .block-active::before,
+.block-zone .block-active::after {
+    display: none;
+}
+
+.block-zone .block-active.snap-preview {
+    outline: 3px solid rgba(255,255,255,0.8);
+    outline-offset: -2px;
+}
+
+.snap-preview {
+    outline: 3px solid rgba(255,255,255,0.8);
+    outline-offset: -2px;
+}
+
+.block-active--flow     { background-color: #c0392b; }
+
+.block-zone {
+    margin: 0 8px 8px;
+    min-height: 48px;
+    height: auto;
+    border: 2px dashed rgba(255,255,255,0.25);
+    border-radius: 5px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    font-style: italic;
+    transition: border-color 0.15s, background 0.15s, min-height 0.15s;
+    cursor: default;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px;
+    overflow: visible;
+}
+
+.block-zone.has-blocks {
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 4px;
+}
+
+.block-zone.drag-over {
+    border-color: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.6);
+}
+
+.zone-placeholder {
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    font-style: italic;
+    pointer-events: none;
+}
+
+.block-zone .block-active {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    margin-bottom: 2px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.block-zone .block-active::before,
+.block-zone .block-active::after {
+    display: none;
+}
+
+.block-zone .block-active.snap-preview {
+    outline: 3px solid rgba(255,255,255,0.8);
+    outline-offset: -2px;
+}
+
+.body-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.5);
+    padding: 4px 12px 2px;
+}
+
+.workspace {
+    overflow: auto;
+}
+
+.workspace::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 3000px;
+    height: 3000px;
+    top: 0;
+    left: 0;
+    pointer-events: none;
 }
