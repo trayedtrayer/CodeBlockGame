@@ -14,36 +14,26 @@
             <div class="category">
                 <button class="category-title">Переменные</button>
                 <div class="category-content">
-                    <div class="block block--var" draggable="true" data-type="var-declare">let x = ...</div>
-                    <div class="block block--var" draggable="true" data-type="var-assign">x = ...</div>
-                    <div class="block block--var" draggable="true" data-type="var-change">x += ...</div>
-                </div>
-            </div>
-
-            <div class="category">
-                <button class="category-title">Циклы</button>
-                <div class="category-content">
-                    <div class="block block--loop" draggable="true" data-type="loop-for">for ( ; ; )</div>
-                    <div class="block block--loop" draggable="true" data-type="loop-for-of">for ... of</div>
-                    <div class="block block--loop" draggable="true" data-type="loop-while">while (...)</div>
+                    <div class="block block--var" draggable="true" data-type="var-declare">int x, y, ...</div>
+                    <div class="block block--var" draggable="true" data-type="var-assign">x = выражение</div>
+                    <div class="block block--var" draggable="true" data-type="array-declare">int arr[n]</div>
+                    <div class="block block--var" draggable="true" data-type="array-set">arr[i] = ...</div>
                 </div>
             </div>
 
             <div class="category">
                 <button class="category-title">Условия</button>
                 <div class="category-content">
-                    <div class="block block--cond" draggable="true" data-type="if-block">если (if)</div>
-                    <div class="block block--cond" draggable="true" data-type="else-if-block">иначе если</div>
-                    <div class="block block--cond" draggable="true" data-type="else-block">иначе (else)</div>
+                    <div class="block block--if" draggable="true" data-type="if-block">если (if)</div>
+                    <div class="block block--if" draggable="true" data-type="if-else-block">если-иначе (if-else)</div>
                 </div>
             </div>
 
             <div class="category">
-                <button class="category-title">Функции</button>
+                <button class="category-title">Циклы</button>
                 <div class="category-content">
-                    <div class="block block--func" draggable="true" data-type="func-declare">function f( )</div>
-                    <div class="block block--func" draggable="true" data-type="func-call">вызов f( )</div>
-                    <div class="block block--func" draggable="true" data-type="func-return">return</div>
+                    <div class="block block--loop" draggable="true" data-type="while-block">while (пока)</div>
+                    <div class="block block--loop" draggable="true" data-type="for-block">for ( ; ; )</div>
                 </div>
             </div>
 
@@ -58,8 +48,7 @@
             <div class="category">
                 <button class="category-title">Вывод</button>
                 <div class="category-content">
-                    <div class="block block--output" draggable="true" data-type="console-log">console.log( )</div>
-                    <div class="block block--output" draggable="true" data-type="alert">alert( )</div>
+                    <div class="block block--output" draggable="true" data-type="print">print( )</div>
                 </div>
             </div>
         </aside>
@@ -75,6 +64,7 @@
     </div>
 
     <button id="run-button" class="run-button">▶Запуск</button>
+    <script src="scripts/interperter.js"></script>
     <script src="scripts/script.js"></script>
 </body>
 </html>
